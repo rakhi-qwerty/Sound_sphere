@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/signup.css">
 </head>
 <body>
    <div class="top">
@@ -35,8 +36,100 @@
     </div>
 
     <button>Create Account →</button>
-</div>
- 
-    
+</div>   
 </body>
 </html>
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: radial-gradient(circle at top, #0a1a2f, #050b18);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.container {
+  width: 350px;
+  padding: 30px;
+  border-radius: 15px;
+  background: rgba(20, 30, 50, 0.6);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 25px rgba(0, 150, 255, 0.2);
+}
+
+.container h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+.container p {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.input-box {
+  margin-bottom: 15px;
+}
+
+.input-box label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: #bbb;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 14px;
+}
+
+.input-box input::placeholder {
+  color: #777;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #1e90ff, #3aa0ff);
+  color: white;
+  font-size: 15px;
+   cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: linear-gradient(90deg, #3aa0ff, #1e90ff);
+  transform: scale(1.02);
+}
+
+.top-bar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 13px;
+}
+
+.top-bar a {
+  color: #227fdc;
+  text-decoration: none;
+  margin-left: 8px;
+}
+</style>
