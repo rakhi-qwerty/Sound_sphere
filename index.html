@@ -18,18 +18,20 @@
 <nav class="navbar">
 
    <div class="left-half">
-  <div class="logo-box">
-    <img src="/images/logo_no_bg - Edited.png" alt="logo">
+       <a href="index.html" class="logo-link">
+          <div class="logo-box">
+             <img src="images/logo_no_bg - Edited.png" alt="logo">
+          </div>
+      </a>
   </div>
-</div>
 
     <div class="right-half">
 
-        <div class="search-icon">
+        <div class="search-icon" onclick="openSearch()">
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
 
-       <div class="explore-icon">
+       <div class="explore-icon" onclick="openExplore()">
             <i class="fa-solid fa-compass"></i>
        </div>
 
@@ -38,12 +40,27 @@
             <input type="text" placeholder="Search songs, artists...">
        </div>
 
-        <button class="signup-btn">Sign Up</button>
-        <button class="login-btn">Sign in</button>
+        <button onclick="window.location.href='#'" class="signup-btn">Sign Up</button>
+        <button onclick="window.location.href='#'" class="login-btn">Sign in</button>
 
     </div>
 
 </nav>
+
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <h1>Explore Millions of Songs.</h1>
+    <h2>Fresh Beats & vibes.</h2>
+    <p>Explore more. millions of Songs Fresh Beats and vibes.</p>
+    <button class="cta-btn">Get started</button>
+  </div>
+</section>
+
+
+
+
+
 
 </body>
 </html> 
