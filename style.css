@@ -492,4 +492,42 @@ img {
 
 
 
+.album-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+
+.album-container::-webkit-scrollbar {
+  display: none;
+}
+
+.album-card {
+  min-width: 150px;
+  color: white;
+  cursor: pointer;
+}
+
+.album-card img {
+  width: 150px;
+  height: 150px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.album-card h4 {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.album-card:hover img {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+
+
+
+
 
