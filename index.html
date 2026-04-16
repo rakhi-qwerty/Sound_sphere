@@ -4,32 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-</head>
+<link rel="stylesheet" href="./style.css">
 <body>
-      
+
+ 
+
+
 <nav class="navbar">
-    <div class="logo"></div>
 
-    <div class="search-box">
-      <input type="text" placeholder="search songs,artist...."> 
+   <div class="left-half">
+       <a href="index.html" class="logo-link">
+          <div class="logo-box">
+             <img src="images/logo_no_bg - Edited.png" alt="logo">
+          </div>
+      </a>
+  </div>
+
+    <div class="right-half">
+
+        <div class="search-icon" onclick="openSearch()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+       <div class="explore-icon" onclick="openExplore()">
+            <i class="fa-solid fa-compass"></i>
+       </div>
+
+       <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search songs, artists...">
+       </div>
+
+        <button onclick="window.location.href='#'" class="signup-btn">Sign Up</button>
+        <button onclick="window.location.href='#'" class="login-btn">Sign in</button>
+
     </div>
 
-    <div class="auth">
-        <button class="btn-signin"> Sign in</button>
-        <button class="btn-signup"> Sign up</button>
-    </div>
 </nav>
 
 
 
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <h1>Explore Millions of Songs.</h1>
+    <h2>Fresh Beats & vibes.</h2>
+    <p>Explore more. millions of Songs Fresh Beats and vibes.</p>
+    <button class="cta-btn">Get started</button>
+  </div>
+</section>
 
+
+
+<section class="content-section">
+
+
+  <div class="trending">
+    <h2 class="section-title">Trending songs</h2>
+    <div class="cards" id="songs-container"></div>
+  </div>
+
+  
+  <div class="genres-section">
+    <h2 class="section-title">Fresh Genres</h2>
+
+    <div class="genres">
+      <button class="genre-btn pop">Pop</button>
+      <button class="genre-btn rock">Rock</button>
+      <button class="genre-btn relax">Relax</button>
+      <button class="genre-btn country">Country</button>
+      <button class="genre-btn hiphop">Hip Hop</button>
+      <button class="genre-btn soft">Soft</button>
+
+    </div>
+  </div>
+
+ <div class="artist-card">
+
+ <h2 class="section-title-artist">Artist</h2>
+
+  <div class="artist-section" id="artist-container">
+    
+
+
+     <a href="artist.html">
+      <img src="images/artist/arjit singh.jpg" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+     <a href="artist.html">
+      <img src="images/artist/Justin bieber.webp" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+      <a href="artist.html">
+      <img src="images/artist/daljit dosanjih.jpg" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+      <a href="artist.html">
+      <img src="images/artist/arman malik.jpg" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+      <a href="artist.html">
+      <img src="images/artist/kim taehyung.jpg" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+      <a href="artist.html">
+      <img src="images/artist/taylor swift.jpg" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+      <a href="artist.html">
+      <img src="images/artist/lisa.webp" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+      <a href="artist.html">
+      <img src="images/artist/yo yo honey singh.jpg" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+      <a href="artist.html">
+      <img src="images/artist/Justin bieber.webp" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+      <a href="artist.html">
+      <img src="images/artist/lisa.webp" alt="artist">
+      <h4>Arijit Singh</h4>
+     </a>
+
+  </div>
+
+
+  <div class="album-section">
+
+    <h2 class="section-title">Popular Albums and singles</h2>
+     
+    <div class="album-container">
+
+      <div class="album-card">
+        <img src="images/chahu me ya na.jpg" alt="album">
+        <h4>Aashiqui 2 </h4>
+      
+    </div>
+
+      <div class="album-card">
+        <img src="images/album2.jpg" alt="album">
+        <h4>Album Name</h4>
+      </div>
+
+      
+
+  </div>
+ 
+  
+
+
+</div>
+
+</section>
+
+
+
+
+
+
+
+<script src="/script.js"></script>
 
 </body>
-</html>
+</html> 
