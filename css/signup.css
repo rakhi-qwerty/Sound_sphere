@@ -5,12 +5,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    color:aliceblue
+    min-height: 100vh; 
+    color: aliceblue;
+    padding: 15px; 
 }
 
 .container {
-    width: 350px;
+    width: 100%;
+    max-width: 390px; 
     background: #111827;
     padding: 30px;
     border-radius: 15px;
@@ -20,6 +22,7 @@ body {
 .container h2 {
     color: white;
     margin-bottom: 5px;
+    font-size: 22px;
 }
 
 .container p {
@@ -29,48 +32,51 @@ body {
 }
 
 .input-box {
-    margin-bottom: 15px;
+    position: relative;
+    margin-bottom: 30px;
 }
 
 .input-box label {
     display: block;
-    color: #d1d5db;
-    font-size: 13px;
     margin-bottom: 5px;
+    font-size: 15px;
 }
 
 .input-box input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
+    width: 90%;
+    padding: 10px 40px 15px 10px; 
+    border-radius: 10px;
     border: none;
     outline: none;
     background: #1f2937;
     color: white;
 }
 
+.eye {
+    position: absolute;
+    right: 2px;
+    top: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #cbd5e1;
+}
+
 button {
     width: 100%;
-    padding: 12px;
+    padding: 13px;
     border: none;
     border-radius: 10px;
-    background: #2563eb;
+    background: linear-gradient(to right, #2691ae, #0072ff);
     color: white;
-    font-size: 15px;
+    font-size: 17px;
     cursor: pointer;
-    margin-top: 10px;
 }
-
-button:hover {
-    background: #1d4ed8;
-}
-
 .top {
     position: absolute;
     top: 20px;
     right: 30px;
     color: white;
-    font-size: 14px;
+    font-size: 17px;
 }
 
 .top a {
@@ -79,19 +85,19 @@ button:hover {
     margin-left: 10px;
 }
 
-
-
-  
-
-
-style {
-@media (max-width: 480px) {
-    .container {
-        padding: 20px;
-        border-radius: 12px;
+style{
+    @media (max-width: 480px) {
+    body {
+        align-items: flex-start;
+        padding-top: 40px;
     }
 
-    .container h2 {
+    .container {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .container h1 {
         font-size: 20px;
     }
 
@@ -100,29 +106,21 @@ style {
     }
 
     .input-box input {
-        padding: 9px;
+        padding: 9px 38px 9px 9px;
         font-size: 13px;
     }
 
-    button {
-        padding: 10px;
+    .eye {
+        top: 32px;
         font-size: 14px;
     }
 
-    .top {
-        right: 15px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 768px) {
-    .container {
-        max-width: 90%;
+    button {
+        padding: 11px;
+        font-size: 14px;
     }
 }
 }
- 
-        
-      
 
-       
+
+    

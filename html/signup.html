@@ -8,7 +8,7 @@
 </head>
 <body>
    <div class="top">
-    <a href="#">login</a>
+    <a href="signin.html">Log in</a>
 </div>
 
 <div class="container">
@@ -28,11 +28,13 @@
     <div class="input-box">
         <label>Password</label>
         <input type="password" placeholder="******">
+         <span class="eye" onclick="togglePassward()">👁</span>
     </div>
 
     <div class="input-box">
         <label>Confirm Password</label>
         <input type="password" placeholder="******">
+        <span class="eye" onclick="togglePassward()">👁</span>
     </div>
 
     <button>Create Account →</button>
@@ -51,9 +53,8 @@
         const email = document.querySelectorAll("input")[1].value.trim();
         const password = document.querySelectorAll("input")[2].value.trim();
         const confirmPassword = document.querySelectorAll("input")[3].value.trim();
-
-
-        if (name === "") {
+       
+         if (name === "") {
             alert("Please enter your full name");
             return;
         }
@@ -72,12 +73,34 @@
             alert("Password must be at least 6 characters");
             return;
         }
-
+           
         if (password !== confirmPassword) {
             alert("Passwords do not match");
             return;
         }
+    
 
         alert("Account created successfully ");
     });
+      
+    function togglePassward() {
+    const eyes = document.querySelectorAll(".eye");
+
+    eyes.forEach((eye) => {
+        eye.addEventListener("click", function () {
+            
+            let input = this.previousElementSibling;
+
+            if (input.type === "password") {
+                input.type = "text";
+                this.textContent = "👁️"; 
+            } else {
+                input.type = "password";
+                this.textContent = "👁"; 
+            }
+        });
+    });
+}
+
+togglePassward();
 </script>
