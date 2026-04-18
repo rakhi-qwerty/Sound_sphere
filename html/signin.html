@@ -4,8 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../css/signin.css">
 </head>
 <body>
+   <div class="top">
+    Don't have an account? <a href="signup.html">Signup for free</a>
+</div>
+
+<div class="container">
+    <h1>Welcome Back</h1>
+    <p>Sign in to continue your musical journey</p>
+
+    <div class="input-box">
+        <label>Email Address</label>
+        <input type="email" placeholder="Enter your email">
+    </div>
+
+    <div class="input-box password-box">
+        <label>Password</label>
+        <input type="password" placeholder="Enter your password ">
+        <span class="eye" onclick="togglePassword()">👁</span>
+    </div>
+
+    <button>Log In</button>
+</div> 
     
 </body>
 </html>
+
+
+<script>
+    const passwordInput=document.querySelector('.password-box input');
+    const toggleButton=document.querySelector('.password-box span');
+    const button = document.querySelector('button');
+    const emailInput = document.querySelector('input[type="email"]');
+    const toggleIcon = document.querySelector('.password-box span');
+
+    toggleIcon.addEventListener('click', function () {
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.textContent = "👁️";
+    } else {
+        passwordInput.type = "password";
+        toggleIcon.textContent = "👁";
+    }
+});
+
+   button.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    let email = emailInput.value.trim();
+    let password = passwordInput.value.trim();
+
+    if (email === "" || password === "") {
+        alert("Please fill all fields!");
+        return;
+    }
+
+    let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if (!email.match(pattern)) {
+        alert("Enter a valid email!");
+        return;
+    }
+
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters!");
+        return;
+    }
+
+    alert("Login Successful!");
+});
+
+    
+</script>
