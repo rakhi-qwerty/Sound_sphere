@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Signup</title>
     <link rel="stylesheet" href="../css/signup.css">
 </head>
 <body>
-   <div class="top">
-    <a href="#">login</a>
+
+<div class="top">
+    <a href="login.html">Login</a>
 </div>
 
 <div class="container">
@@ -17,67 +18,29 @@
 
     <div class="input-box">
         <label>Full Name</label>
-        <input type="text" placeholder=" ">
+        <input type="text" id="fullname" placeholder=" ">
     </div>
 
     <div class="input-box">
         <label>Email Address</label>
-        <input type="email" placeholder=" ">
+        <input type="email" id="email" placeholder=" ">
     </div>
 
     <div class="input-box">
         <label>Password</label>
-        <input type="password" placeholder="******">
+        <input type="password" id="password" placeholder="******">
     </div>
 
     <div class="input-box">
         <label>Confirm Password</label>
-        <input type="password" placeholder="******">
+        <input type="password" id="confirmPassword" placeholder="******">
     </div>
 
-    <button>Create Account →</button>
+    <!-- IMPORTANT: id added -->
+    <button id="signupBtn">Create Account →</button>
 </div>   
+
+<script src="../js/signup.js"></script>
+
 </body>
 </html>
-
-
-<script>
-    const button = document.querySelector("button");
-
-    button.addEventListener("click", function(e) {
-        e.preventDefault(); 
-
-        const name = document.querySelectorAll("input")[0].value.trim();
-        const email = document.querySelectorAll("input")[1].value.trim();
-        const password = document.querySelectorAll("input")[2].value.trim();
-        const confirmPassword = document.querySelectorAll("input")[3].value.trim();
-
-
-        if (name === "") {
-            alert("Please enter your full name");
-            return;
-        }
-
-        if (email === "") {
-            alert("Please enter your email");
-            return;
-        }
-
-        if (!email.includes("@") || !email.includes(".")) {
-            alert("Enter a valid email");
-            return;
-        }
-
-        if (password.length < 6) {
-            alert("Password must be at least 6 characters");
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
-        }
-
-        alert("Account created successfully ");
-    });
-</script>
