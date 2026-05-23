@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Album – SoundSphere</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/artist.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="left-half">
+    <a href="/" class="logo-link">
+      <div class="logo-box"><img src="/images/logo_no_bg - Edited.png" alt="SoundSphere"></div>
+    </a>
+  </div>
+  <div class="right-half">
+    <button onclick="history.back()" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    <div id="authButtons">
+      <button onclick="window.location.href='/html/signup.html'" class="signup-btn">Sign Up</button>
+      <button onclick="window.location.href='/html/signin.html'" class="login-btn">Sign in</button>
+    </div>
+    <div id="userMenu" style="display:none; align-items:center; gap:8px;">
+      <span id="userName" style="color:#fff; font-size:14px;"></span>
+      <button onclick="logout()" class="login-btn" style="color:#f87171;">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <a href="/" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+      <a href="/html/search.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></a>
+      <a href="/html/library.html" class="nav-item"><i class="fa-solid fa-book"></i><span>Library</span></a>
+    </nav>
+    <div class="sidebar-section">
+      <h4>Your Playlists</h4>
+      <div id="sidebarPlaylists"></div>
+    </div>
+  </aside>
+
+  <main class="main-content" id="albumPage">
+    <div class="loading-full"><i class="fa-solid fa-spinner fa-spin"></i> Loading album...</div>
+  </main>
+</div>
+
+<!-- FULL-SCREEN PLAYER -->
+<div id="fullPlayer" class="full-player" style="display:none;">
+  <button class="fp-close" onclick="closeFullPlayer()"><i class="fa-solid fa-chevron-down"></i></button>
+  <div class="fp-bg" id="fpBg"></div>
+  <div class="fp-content">
+    <img id="fpImg" src="" alt="cover" class="fp-cover">
+    <div class="fp-meta">
+      <div><div id="fpTitle" class="fp-title">-</div><div id="fpArtist" class="fp-artist">-</div></div>
+      <button class="like-btn" id="fpLikeBtn" onclick="toggleLike()"><i class="fa-regular fa-heart"></i></button>
+    </div>
+    <div class="fp-progress">
+      <input type="range" id="fpProgressBar" value="0" min="0" max="100" oninput="seekTo(this.value)">
+      <div class="fp-times"><span id="fpCurrentTime">0:00</span><span id="fpTotalTime">0:00</span></div>
+    </div>
+    <div class="fp-controls">
+      <button id="shuffleBtn" onclick="toggleShuffle()"><i class="fa-solid fa-shuffle"></i></button>
+      <button onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+      <button class="fp-play-btn" id="fpPlayBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+      <button onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+      <button id="repeatBtn" onclick="toggleRepeat()"><i class="fa-solid fa-repeat"></i></button>
+    </div>
+    <div class="fp-extras">
+      <button onclick="toggleQueue()"><i class="fa-solid fa-list"></i> Queue</button>
+      <button onclick="toggleLyrics()"><i class="fa-solid fa-microphone-lines"></i> Lyrics</button>
+      <div class="fp-volume">
+        <i class="fa-solid fa-volume-high"></i>
+        <input type="range" id="fpVolume" value="80" min="0" max="100" oninput="setVolume(this.value)">
+      </div>
+    </div>
+    <div id="lyricsPanel" class="lyrics-panel" style="display:none;">
+      <h3><i class="fa-solid fa-microphone-lines"></i> Lyrics</h3>
+      <div id="lyricsContent" class="lyrics-content">Fetching lyrics...</div>
+    </div>
+    <div id="queuePanel" class="queue-panel" style="display:none;">
+      <h3><i class="fa-solid fa-list"></i> Up Next</h3>
+      <div id="queueList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MINI PLAYER BAR -->
+<div class="player-bar" id="playerBar" style="display:none;">
+  <div class="player-left" onclick="openFullPlayer()" style="cursor:pointer;">
+    <img id="playerImg" src="" alt="cover">
+    <div class="player-info">
+      <span id="playerTitle">-</span>
+      <span id="playerArtist">-</span>
+    </div>
+    <button class="like-btn" id="likeBtn" onclick="event.stopPropagation(); toggleLike()"><i class="fa-regular fa-heart"></i></button>
+  </div>
+  <div class="player-center">
+    <button id="barShuffleBtn" onclick="toggleShuffle()"><i class="fa-solid fa-shuffle"></i></button>
+    <button onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+    <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+    <button onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+    <button id="barRepeatBtn" onclick="toggleRepeat()"><i class="fa-solid fa-repeat"></i></button>
+    <div class="progress-wrap">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0" min="0" max="100" oninput="seekTo(this.value)">
+      <span id="totalTime">0:00</span>
+    </div>
+  </div>
+  <div class="player-right">
+    <button onclick="openFullPlayer()"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+    <i class="fa-solid fa-volume-high"></i>
+    <input type="range" id="volumeBar" value="80" min="0" max="100" oninput="setVolume(this.value)">
+  </div>
+</div>
+
+<script src="/js/player.js"></script>
+<script>
+const API = '';
+function getToken() { return localStorage.getItem('ss_token'); }
+function getUser()  { return JSON.parse(localStorage.getItem('ss_user') || 'null'); }
+function logout()   { localStorage.removeItem('ss_token'); localStorage.removeItem('ss_user'); window.location.reload(); }
+
+function updateAuthUI() {
+  const user = getUser();
+  document.getElementById('authButtons').style.display = user ? 'none' : 'flex';
+  document.getElementById('userMenu').style.display    = user ? 'flex' : 'none';
+  if (user) document.getElementById('userName').textContent = `Hi, ${user.fullname.split(' ')[0]} 👋`;
+}
+
+async function loadAlbumPage() {
+  const params = new URLSearchParams(window.location.search);
+  const name   = params.get('name') || 'Unknown Album';
+  document.title = `${name} – SoundSphere`;
+
+  const page = document.getElementById('albumPage');
+  const data = await fetch(`${API}/api/tracks?search=${encodeURIComponent(name)}&limit=20`).then(r => r.json()).catch(() => ({ results: [] }));
+  const songs = data.results || [];
+  window._albumPlaylist = songs;
+
+  const coverImg  = songs[0]?.image || '/images/logo_no_bg - Edited.png';
+  const artistName = songs[0]?.artist_name || 'Various Artists';
+  const totalDur  = songs.reduce((acc, s) => acc + (s.duration || 0), 0);
+  const durStr    = totalDur ? `${Math.floor(totalDur/3600)}h ${Math.floor((totalDur%3600)/60)}m` : '';
+
+  page.innerHTML = `
+    <div class="album-hero">
+      <img src="${coverImg}" alt="${name}" class="album-cover-big" onerror="this.src='/images/logo_no_bg - Edited.png'">
+      <div class="album-hero-info">
+        <span class="album-label">Album</span>
+        <h1 class="album-title">${name}</h1>
+        <p class="album-meta">${artistName} • ${songs.length} songs${durStr ? ' • ' + durStr : ''}</p>
+        <div class="artist-actions">
+          <button class="play-all-btn" onclick="playAll()"><i class="fa-solid fa-play"></i> Play</button>
+          <button class="shuffle-all-btn" onclick="shuffleAll()"><i class="fa-solid fa-shuffle"></i> Shuffle</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="artist-section-block">
+      <div class="results-list">
+        ${songs.map((s, i) => `
+          <div class="result-row" onclick="playSong(${i}, window._albumPlaylist)">
+            <span class="result-num">${i+1}</span>
+            <img src="${s.image}" onerror="this.src='/images/logo_no_bg - Edited.png'" alt="">
+            <div class="result-info">
+              <span class="result-title">${s.name}</span>
+              <span class="result-sub">${s.artist_name}</span>
+            </div>
+            <span class="result-dur">${s.duration ? Math.floor(s.duration/60)+':'+(s.duration%60).toString().padStart(2,'0') : '--'}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function playAll()    { if (window._albumPlaylist?.length) playSong(0, window._albumPlaylist); }
+function shuffleAll() {
+  if (!window._albumPlaylist?.length) return;
+  const shuffled = [...window._albumPlaylist].sort(() => Math.random() - 0.5);
+  window._albumPlaylist = shuffled;
+  playSong(0, shuffled);
+}
+
+async function loadSidebarPlaylists() {
+  const token = getToken();
+  if (!token) return;
+  const playlists = await fetch(`${API}/api/playlists`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []);
+  document.getElementById('sidebarPlaylists').innerHTML = playlists.map(p =>
+    `<a href="/html/library.html" class="sidebar-pl-item"><i class="fa-solid fa-music"></i> ${p.name}</a>`
+  ).join('');
+}
+
+updateAuthUI();
+loadSidebarPlaylists();
+loadAlbumPage();
+initPlayer();
+</script>
+</body>
+</html>

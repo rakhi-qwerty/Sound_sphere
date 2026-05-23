@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search – SoundSphere</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/search.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="left-half">
+    <a href="/" class="logo-link">
+      <div class="logo-box">
+        <img src="/images/logo_no_bg - Edited.png" alt="SoundSphere">
+      </div>
+    </a>
+  </div>
+  <div class="right-half">
+    <div id="authButtons">
+      <button onclick="window.location.href='/html/signup.html'" class="signup-btn">Sign Up</button>
+      <button onclick="window.location.href='/html/signin.html'" class="login-btn">Sign in</button>
+    </div>
+    <div id="userMenu" style="display:none; align-items:center; gap:8px;">
+      <span id="userName" style="color:#fff; font-size:14px;"></span>
+      <button onclick="logout()" class="login-btn" style="color:#f87171;">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- SIDEBAR + MAIN LAYOUT -->
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <a href="/" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+      <a href="/html/search.html" class="nav-item active"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></a>
+      <a href="/html/library.html" class="nav-item"><i class="fa-solid fa-book"></i><span>Library</span></a>
+    </nav>
+    <div class="sidebar-section">
+      <h4>Your Playlists</h4>
+      <div id="sidebarPlaylists"></div>
+      <button class="new-playlist-btn" onclick="createPlaylist()">
+        <i class="fa-solid fa-plus"></i> New Playlist
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <h1 class="page-title">Search</h1>
+
+    <!-- BIG SEARCH BAR -->
+    <div class="search-hero">
+      <div class="search-big">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="What do you want to listen to?" autofocus>
+        <button id="clearBtn" onclick="clearSearch()" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <!-- AUTOCOMPLETE DROPDOWN -->
+      <div id="autocomplete" class="autocomplete-box" style="display:none;"></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="search-tabs" id="searchTabs" style="display:none;">
+      <button class="tab-btn active" onclick="switchTab('songs')">Songs</button>
+      <button class="tab-btn" onclick="switchTab('artists')">Artists</button>
+      <button class="tab-btn" onclick="switchTab('albums')">Albums</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="searchResults"></div>
+
+    <!-- BROWSE CATEGORIES (shown when no search) -->
+    <div id="browseSection">
+      <h2 class="section-title">Browse Categories</h2>
+      <div class="category-grid">
+        <div class="cat-card cat-pop"        onclick="doSearch('pop hits')"><span>Pop</span></div>
+        <div class="cat-card cat-rock"       onclick="doSearch('rock songs')"><span>Rock</span></div>
+        <div class="cat-card cat-hiphop"     onclick="doSearch('hip hop rap')"><span>Hip Hop</span></div>
+        <div class="cat-card cat-bollywood"  onclick="doSearch('bollywood hits')"><span>Bollywood</span></div>
+        <div class="cat-card cat-punjabi"    onclick="doSearch('punjabi songs')"><span>Punjabi</span></div>
+        <div class="cat-card cat-romantic"   onclick="doSearch('romantic hindi songs')"><span>Romantic</span></div>
+        <div class="cat-card cat-jazz"       onclick="doSearch('jazz music')"><span>Jazz</span></div>
+        <div class="cat-card cat-electronic" onclick="doSearch('electronic dance music')"><span>Electronic</span></div>
+        <div class="cat-card cat-acoustic"   onclick="doSearch('acoustic songs')"><span>Acoustic</span></div>
+        <div class="cat-card cat-party"      onclick="doSearch('party songs')"><span>Party</span></div>
+        <div class="cat-card cat-kpop"       onclick="doSearch('kpop songs')"><span>K-Pop</span></div>
+        <div class="cat-card cat-country"    onclick="doSearch('country music')"><span>Country</span></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- FULL-SCREEN PLAYER (shared) -->
+<div id="fullPlayer" class="full-player" style="display:none;">
+  <button class="fp-close" onclick="closeFullPlayer()"><i class="fa-solid fa-chevron-down"></i></button>
+  <div class="fp-bg" id="fpBg"></div>
+  <div class="fp-content">
+    <img id="fpImg" src="" alt="cover" class="fp-cover">
+    <div class="fp-meta">
+      <div>
+        <div id="fpTitle" class="fp-title">-</div>
+        <div id="fpArtist" class="fp-artist">-</div>
+      </div>
+      <button class="like-btn" id="fpLikeBtn" onclick="toggleLike()"><i class="fa-regular fa-heart"></i></button>
+    </div>
+    <div class="fp-progress">
+      <input type="range" id="fpProgressBar" value="0" min="0" max="100" oninput="seekTo(this.value)">
+      <div class="fp-times"><span id="fpCurrentTime">0:00</span><span id="fpTotalTime">0:00</span></div>
+    </div>
+    <div class="fp-controls">
+      <button id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
+      <button onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+      <button class="fp-play-btn" id="fpPlayBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+      <button onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+      <button id="repeatBtn" onclick="toggleRepeat()" title="Repeat"><i class="fa-solid fa-repeat"></i></button>
+    </div>
+    <div class="fp-extras">
+      <button onclick="toggleQueue()" title="Queue"><i class="fa-solid fa-list"></i> Queue</button>
+      <button onclick="toggleLyrics()" title="Lyrics"><i class="fa-solid fa-microphone-lines"></i> Lyrics</button>
+      <div class="fp-volume">
+        <i class="fa-solid fa-volume-high"></i>
+        <input type="range" id="fpVolume" value="80" min="0" max="100" oninput="setVolume(this.value)">
+      </div>
+    </div>
+    <!-- LYRICS PANEL -->
+    <div id="lyricsPanel" class="lyrics-panel" style="display:none;">
+      <h3><i class="fa-solid fa-microphone-lines"></i> Lyrics</h3>
+      <div id="lyricsContent" class="lyrics-content">Fetching lyrics...</div>
+    </div>
+    <!-- QUEUE PANEL -->
+    <div id="queuePanel" class="queue-panel" style="display:none;">
+      <h3><i class="fa-solid fa-list"></i> Up Next</h3>
+      <div id="queueList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MINI PLAYER BAR -->
+<div class="player-bar" id="playerBar" style="display:none;">
+  <div class="player-left" onclick="openFullPlayer()" style="cursor:pointer;">
+    <img id="playerImg" src="" alt="cover">
+    <div class="player-info">
+      <span id="playerTitle">-</span>
+      <span id="playerArtist">-</span>
+    </div>
+    <button class="like-btn" id="likeBtn" onclick="event.stopPropagation(); toggleLike()" title="Like">
+      <i class="fa-regular fa-heart"></i>
+    </button>
+  </div>
+  <div class="player-center">
+    <button id="barShuffleBtn" onclick="toggleShuffle()" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
+    <button onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+    <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+    <button onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+    <button id="barRepeatBtn" onclick="toggleRepeat()" title="Repeat"><i class="fa-solid fa-repeat"></i></button>
+    <div class="progress-wrap">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0" min="0" max="100" oninput="seekTo(this.value)">
+      <span id="totalTime">0:00</span>
+    </div>
+  </div>
+  <div class="player-right">
+    <button onclick="openFullPlayer()" title="Expand"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+    <i class="fa-solid fa-volume-high"></i>
+    <input type="range" id="volumeBar" value="80" min="0" max="100" oninput="setVolume(this.value)">
+  </div>
+</div>
+
+<!-- ADD TO PLAYLIST MODAL -->
+<div id="playlistModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <h3>Add to Playlist</h3>
+    <div id="modalPlaylists"></div>
+    <button class="modal-close" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<script src="/js/player.js"></script>
+<script>
+const API = '';
+
+// ── AUTH ─────────────────────────────────────────────────────
+function getToken() { return localStorage.getItem('ss_token'); }
+function getUser()  { return JSON.parse(localStorage.getItem('ss_user') || 'null'); }
+function logout()   { localStorage.removeItem('ss_token'); localStorage.removeItem('ss_user'); window.location.reload(); }
+
+function updateAuthUI() {
+  const user = getUser();
+  document.getElementById('authButtons').style.display = user ? 'none' : 'flex';
+  document.getElementById('userMenu').style.display    = user ? 'flex' : 'none';
+  if (user) document.getElementById('userName').textContent = `Hi, ${user.fullname.split(' ')[0]} 👋`;
+}
+
+// ── SEARCH ────────────────────────────────────────────────────
+let searchTimeout = null;
+let currentTab = 'songs';
+let allResults = { songs: [], artists: [], albums: [] };
+
+const input = document.getElementById('searchInput');
+input.addEventListener('input', () => {
+  const val = input.value.trim();
+  document.getElementById('clearBtn').style.display = val ? 'block' : 'none';
+  clearTimeout(searchTimeout);
+  if (!val) { showBrowse(); return; }
+  searchTimeout = setTimeout(() => doSearch(val), 400);
+});
+
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { clearTimeout(searchTimeout); doSearch(input.value.trim()); }
+});
+
+function clearSearch() {
+  input.value = '';
+  document.getElementById('clearBtn').style.display = 'none';
+  showBrowse();
+  input.focus();
+}
+
+function showBrowse() {
+  document.getElementById('browseSection').style.display = 'block';
+  document.getElementById('searchTabs').style.display = 'none';
+  document.getElementById('searchResults').innerHTML = '';
+  document.getElementById('autocomplete').style.display = 'none';
+}
+
+async function doSearch(query) {
+  if (!query) return;
+  input.value = query;
+  document.getElementById('clearBtn').style.display = 'block';
+  document.getElementById('browseSection').style.display = 'none';
+  document.getElementById('searchTabs').style.display = 'flex';
+  document.getElementById('searchResults').innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Searching...</div>';
+
+  const [songsRes, artistsRes, albumsRes] = await Promise.all([
+    fetch(`${API}/api/tracks?search=${encodeURIComponent(query)}&limit=20`).then(r => r.json()).catch(() => ({ results: [] })),
+    fetch(`${API}/api/artists?search=${encodeURIComponent(query)}`).then(r => r.json()).catch(() => ({ results: [] })),
+    fetch(`${API}/api/albums?search=${encodeURIComponent(query)}`).then(r => r.json()).catch(() => ({ results: [] }))
+  ]);
+
+  allResults.songs   = songsRes.results   || [];
+  allResults.artists = artistsRes.results || [];
+  allResults.albums  = albumsRes.results  || [];
+
+  renderTab(currentTab);
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn')[['songs','artists','albums'].indexOf(tab)].classList.add('active');
+  renderTab(tab);
+}
+
+function renderTab(tab) {
+  const container = document.getElementById('searchResults');
+  if (tab === 'songs') {
+    const songs = allResults.songs;
+    if (!songs.length) { container.innerHTML = '<p class="no-results">No songs found.</p>'; return; }
+    window._searchPlaylist = songs;
+    container.innerHTML = `<div class="results-list">${songs.map((s, i) => `
+      <div class="result-row" onclick="playSong(${i}, window._searchPlaylist)">
+        <span class="result-num">${i+1}</span>
+        <img src="${s.image}" onerror="this.src='/images/logo_no_bg - Edited.png'" alt="">
+        <div class="result-info">
+          <span class="result-title">${s.name}</span>
+          <span class="result-sub">${s.artist_name}</span>
+        </div>
+        <span class="result-dur">${s.duration ? Math.floor(s.duration/60)+':'+(s.duration%60).toString().padStart(2,'0') : '--'}</span>
+        <button class="result-add" onclick="event.stopPropagation(); openAddToPlaylist(${i})" title="Add to playlist"><i class="fa-solid fa-plus"></i></button>
+      </div>`).join('')}</div>`;
+  } else if (tab === 'artists') {
+    const artists = allResults.artists;
+    if (!artists.length) { container.innerHTML = '<p class="no-results">No artists found.</p>'; return; }
+    container.innerHTML = `<div class="artist-grid">${artists.map(a => `
+      <a href="/html/artist.html?id=${a.id}&name=${encodeURIComponent(a.name)}" class="artist-card-s">
+        <img src="${a.image}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(a.name)}&background=1a1a2e&color=fff&size=120'" alt="${a.name}">
+        <span>${a.name}</span>
+      </a>`).join('')}</div>`;
+  } else {
+    const albums = allResults.albums;
+    if (!albums.length) { container.innerHTML = '<p class="no-results">No albums found.</p>'; return; }
+    container.innerHTML = `<div class="album-grid-s">${albums.map(a => `
+      <a href="/html/album.html?id=${a.id}&name=${encodeURIComponent(a.name)}" class="album-card-s">
+        <img src="${a.image}" onerror="this.src='/images/logo_no_bg - Edited.png'" alt="${a.name}">
+        <span class="alb-name">${a.name}</span>
+        <span class="alb-artist">${a.artist_name}</span>
+      </a>`).join('')}</div>`;
+  }
+}
+
+// ── PLAYLIST SIDEBAR ──────────────────────────────────────────
+async function loadSidebarPlaylists() {
+  const token = getToken();
+  if (!token) return;
+  const playlists = await fetch(`${API}/api/playlists`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []);
+  document.getElementById('sidebarPlaylists').innerHTML = playlists.map(p =>
+    `<a href="/html/library.html" class="sidebar-pl-item"><i class="fa-solid fa-music"></i> ${p.name}</a>`
+  ).join('');
+}
+
+async function createPlaylist() {
+  const token = getToken();
+  if (!token) { alert('Please sign in first'); return; }
+  const name = prompt('Playlist name:');
+  if (!name) return;
+  await fetch(`${API}/api/playlists`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
+  loadSidebarPlaylists();
+}
+
+// ── ADD TO PLAYLIST MODAL ─────────────────────────────────────
+async function openAddToPlaylist(songIndex) {
+  const token = getToken();
+  if (!token) { alert('Please sign in to add to playlist'); return; }
+  const song = window._searchPlaylist[songIndex];
+  const playlists = await fetch(`${API}/api/playlists`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []);
+  document.getElementById('modalPlaylists').innerHTML = playlists.length
+    ? playlists.map(p => `<button class="modal-pl-btn" onclick="addToPlaylist(${p.id}, ${songIndex})">${p.name}</button>`).join('')
+    : '<p style="color:#888">No playlists yet. Create one from the Library.</p>';
+  document.getElementById('playlistModal').style.display = 'flex';
+}
+
+async function addToPlaylist(playlistId, songIndex) {
+  const token = getToken();
+  const song  = window._searchPlaylist[songIndex];
+  await fetch(`${API}/api/playlists/${playlistId}/songs`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ track_id: song.id, track_name: song.name, artist_name: song.artist_name, image: song.image, audio: song.audio, duration: song.duration })
+  });
+  closeModal();
+  alert('Added to playlist!');
+}
+
+function closeModal() { document.getElementById('playlistModal').style.display = 'none'; }
+
+// ── INIT ──────────────────────────────────────────────────────
+updateAuthUI();
+loadSidebarPlaylists();
+initPlayer();
+
+// Check URL param
+const urlQ = new URLSearchParams(window.location.search).get('q');
+if (urlQ) { input.value = urlQ; doSearch(urlQ); }
+</script>
+</body>
+</html>

@@ -222,6 +222,17 @@ app.get('/api/playlists/:id/songs', authMiddleware, (req, res) => {
   res.json(db.prepare('SELECT * FROM playlist_songs WHERE playlist_id = ?').all(req.params.id));
 });
 
+app.delete('/api/playlists/:id', authMiddleware, (req, res) => {
+  db.prepare('DELETE FROM playlist_songs WHERE playlist_id = ?').run(req.params.id);
+  db.prepare('DELETE FROM playlists WHERE id = ? AND user_id = ?').run(req.params.id, req.user.id);
+  res.json({ success: true });
+});
+
+app.delete('/api/playlists/:id/songs/:track_id', authMiddleware, (req, res) => {
+  db.prepare('DELETE FROM playlist_songs WHERE playlist_id = ? AND track_id = ?').run(req.params.id, req.params.track_id);
+  res.json({ success: true });
+});
+
 // ── START ─────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ SoundSphere running at http://localhost:${PORT}`));

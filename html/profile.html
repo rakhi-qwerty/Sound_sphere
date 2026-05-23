@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile – SoundSphere</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="left-half">
+    <a href="/" class="logo-link">
+      <div class="logo-box"><img src="/images/logo_no_bg - Edited.png" alt="SoundSphere"></div>
+    </a>
+  </div>
+  <div class="right-half">
+    <div id="authButtons">
+      <button onclick="window.location.href='/html/signup.html'" class="signup-btn">Sign Up</button>
+      <button onclick="window.location.href='/html/signin.html'" class="login-btn">Sign in</button>
+    </div>
+    <div id="userMenu" style="display:none; align-items:center; gap:8px;">
+      <span id="userName" style="color:#fff; font-size:14px;"></span>
+      <button onclick="logout()" class="login-btn" style="color:#f87171;">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <a href="/" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+      <a href="/html/search.html" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></a>
+      <a href="/html/library.html" class="nav-item"><i class="fa-solid fa-book"></i><span>Library</span></a>
+      <a href="/html/profile.html" class="nav-item active"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+    </nav>
+    <div class="sidebar-section">
+      <h4>Your Playlists</h4>
+      <div id="sidebarPlaylists"></div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <!-- PROFILE HEADER -->
+    <div class="profile-header" id="profileHeader">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div class="profile-info">
+        <span class="profile-label">Profile</span>
+        <h1 id="profileName">Loading...</h1>
+        <p id="profileEmail" style="color:#888; font-size:14px;"></p>
+        <div class="profile-stats" id="profileStats"></div>
+      </div>
+    </div>
+
+    <!-- EDIT PROFILE -->
+    <div class="profile-section">
+      <h2><i class="fa-solid fa-pen"></i> Edit Profile</h2>
+      <div class="edit-form">
+        <div class="input-row">
+          <label>Display Name</label>
+          <input type="text" id="editName" placeholder="Your name">
+        </div>
+        <button class="save-btn" onclick="saveProfile()"><i class="fa-solid fa-check"></i> Save Changes</button>
+        <div id="saveMsg" style="display:none; color:#4ade80; margin-top:10px; font-size:13px;"></div>
+      </div>
+    </div>
+
+    <!-- FOLLOWED ARTISTS -->
+    <div class="profile-section">
+      <h2><i class="fa-solid fa-heart" style="color:#f87171"></i> Following</h2>
+      <div id="followedArtists" class="followed-grid"></div>
+    </div>
+
+    <!-- LISTENING STATS -->
+    <div class="profile-section">
+      <h2><i class="fa-solid fa-chart-bar"></i> Listening Stats</h2>
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <span class="stat-num" id="statLiked">0</span>
+          <span class="stat-label">Liked Songs</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="statPlaylists">0</span>
+          <span class="stat-label">Playlists</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="statFollowing">0</span>
+          <span class="stat-label">Following</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="statSongs">0</span>
+          <span class="stat-label">Songs Played</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="profile-section">
+      <h2><i class="fa-solid fa-gear"></i> Settings</h2>
+      <div class="settings-list">
+        <div class="setting-row">
+          <div>
+            <span class="setting-title">Audio Quality</span>
+            <span class="setting-sub">Streaming quality</span>
+          </div>
+          <select id="audioQuality" onchange="saveSetting('quality', this.value)" class="setting-select">
+            <option value="96kbps">Normal (96kbps)</option>
+            <option value="160kbps" selected>High (160kbps)</option>
+            <option value="320kbps">Very High (320kbps)</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <div>
+            <span class="setting-title">Autoplay</span>
+            <span class="setting-sub">Continue playing similar songs</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="autoplayToggle" onchange="saveSetting('autoplay', this.checked)" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div>
+            <span class="setting-title">Crossfade</span>
+            <span class="setting-sub">Smooth transition between songs</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="crossfadeToggle" onchange="saveSetting('crossfade', this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div>
+            <span class="setting-title">Show Explicit Content</span>
+            <span class="setting-sub">Allow explicit songs in results</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="explicitToggle" onchange="saveSetting('explicit', this.checked)" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="profile-section danger-zone">
+      <h2><i class="fa-solid fa-triangle-exclamation" style="color:#f87171"></i> Account</h2>
+      <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+    </div>
+  </main>
+</div>
+
+<!-- MINI PLAYER BAR -->
+<div class="player-bar" id="playerBar" style="display:none;">
+  <div class="player-left" onclick="openFullPlayer()" style="cursor:pointer;">
+    <img id="playerImg" src="" alt="cover">
+    <div class="player-info">
+      <span id="playerTitle">-</span>
+      <span id="playerArtist">-</span>
+    </div>
+    <button class="like-btn" id="likeBtn" onclick="event.stopPropagation(); toggleLike()"><i class="fa-regular fa-heart"></i></button>
+  </div>
+  <div class="player-center">
+    <button id="barShuffleBtn" onclick="toggleShuffle()"><i class="fa-solid fa-shuffle"></i></button>
+    <button onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+    <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+    <button onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+    <button id="barRepeatBtn" onclick="toggleRepeat()"><i class="fa-solid fa-repeat"></i></button>
+    <div class="progress-wrap">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0" min="0" max="100" oninput="seekTo(this.value)">
+      <span id="totalTime">0:00</span>
+    </div>
+  </div>
+  <div class="player-right">
+    <button onclick="openFullPlayer()"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+    <i class="fa-solid fa-volume-high"></i>
+    <input type="range" id="volumeBar" value="80" min="0" max="100" oninput="setVolume(this.value)">
+  </div>
+</div>
+
+<!-- FULL-SCREEN PLAYER -->
+<div id="fullPlayer" class="full-player" style="display:none;">
+  <button class="fp-close" onclick="closeFullPlayer()"><i class="fa-solid fa-chevron-down"></i></button>
+  <div class="fp-bg" id="fpBg"></div>
+  <div class="fp-content">
+    <img id="fpImg" src="" alt="cover" class="fp-cover">
+    <div class="fp-meta">
+      <div><div id="fpTitle" class="fp-title">-</div><div id="fpArtist" class="fp-artist">-</div></div>
+      <button class="like-btn" id="fpLikeBtn" onclick="toggleLike()"><i class="fa-regular fa-heart"></i></button>
+    </div>
+    <div class="fp-progress">
+      <input type="range" id="fpProgressBar" value="0" min="0" max="100" oninput="seekTo(this.value)">
+      <div class="fp-times"><span id="fpCurrentTime">0:00</span><span id="fpTotalTime">0:00</span></div>
+    </div>
+    <div class="fp-controls">
+      <button id="shuffleBtn" onclick="toggleShuffle()"><i class="fa-solid fa-shuffle"></i></button>
+      <button onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+      <button class="fp-play-btn" id="fpPlayBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+      <button onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+      <button id="repeatBtn" onclick="toggleRepeat()"><i class="fa-solid fa-repeat"></i></button>
+    </div>
+    <div class="fp-extras">
+      <button onclick="toggleQueue()"><i class="fa-solid fa-list"></i> Queue</button>
+      <button onclick="toggleLyrics()"><i class="fa-solid fa-microphone-lines"></i> Lyrics</button>
+      <div class="fp-volume">
+        <i class="fa-solid fa-volume-high"></i>
+        <input type="range" id="fpVolume" value="80" min="0" max="100" oninput="setVolume(this.value)">
+      </div>
+    </div>
+    <div id="lyricsPanel" class="lyrics-panel" style="display:none;">
+      <h3><i class="fa-solid fa-microphone-lines"></i> Lyrics</h3>
+      <div id="lyricsContent" class="lyrics-content">Fetching lyrics...</div>
+    </div>
+    <div id="queuePanel" class="queue-panel" style="display:none;">
+      <h3><i class="fa-solid fa-list"></i> Up Next</h3>
+      <div id="queueList"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/player.js"></script>
+<script>
+const API = '';
+function getToken() { return localStorage.getItem('ss_token'); }
+function getUser()  { return JSON.parse(localStorage.getItem('ss_user') || 'null'); }
+function logout()   { localStorage.removeItem('ss_token'); localStorage.removeItem('ss_user'); window.location.href = '/'; }
+
+function updateAuthUI() {
+  const user = getUser();
+  document.getElementById('authButtons').style.display = user ? 'none' : 'flex';
+  document.getElementById('userMenu').style.display    = user ? 'flex' : 'none';
+  if (user) document.getElementById('userName').textContent = `Hi, ${user.fullname.split(' ')[0]} 👋`;
+}
+
+async function loadProfile() {
+  const user = getUser();
+  if (!user) { window.location.href = '/html/signin.html'; return; }
+
+  document.getElementById('profileName').textContent  = user.fullname;
+  document.getElementById('profileEmail').textContent = user.email;
+  document.getElementById('editName').value           = user.fullname;
+  document.getElementById('profileAvatar').textContent = user.fullname.charAt(0).toUpperCase();
+
+  const token = getToken();
+  const [liked, playlists] = await Promise.all([
+    fetch(`${API}/api/liked`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
+    fetch(`${API}/api/playlists`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => [])
+  ]);
+
+  const followed = JSON.parse(localStorage.getItem('ss_followed') || '[]');
+  const songsPlayed = parseInt(localStorage.getItem('ss_songs_played') || '0');
+
+  document.getElementById('statLiked').textContent    = liked.length;
+  document.getElementById('statPlaylists').textContent = playlists.length;
+  document.getElementById('statFollowing').textContent = followed.length;
+  document.getElementById('statSongs').textContent    = songsPlayed;
+
+  // Followed artists
+  const followedEl = document.getElementById('followedArtists');
+  if (followed.length) {
+    followedEl.innerHTML = followed.map(name => `
+      <a href="/html/artist.html?name=${encodeURIComponent(name)}" class="followed-artist">
+        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1a1a2e&color=fff&size=80&bold=true" alt="${name}">
+        <span>${name}</span>
+      </a>`).join('');
+  } else {
+    followedEl.innerHTML = '<p style="color:#555; font-size:14px;">You are not following any artists yet.</p>';
+  }
+
+  // Sidebar playlists
+  document.getElementById('sidebarPlaylists').innerHTML = playlists.map(p =>
+    `<a href="/html/library.html" class="sidebar-pl-item"><i class="fa-solid fa-music"></i> ${p.name}</a>`
+  ).join('');
+
+  // Load settings
+  loadSettings();
+}
+
+function saveProfile() {
+  const newName = document.getElementById('editName').value.trim();
+  if (!newName) return;
+  const user = getUser();
+  user.fullname = newName;
+  localStorage.setItem('ss_user', JSON.stringify(user));
+  document.getElementById('profileName').textContent = newName;
+  document.getElementById('profileAvatar').textContent = newName.charAt(0).toUpperCase();
+  const msg = document.getElementById('saveMsg');
+  msg.textContent = 'Profile updated!';
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 2000);
+}
+
+function saveSetting(key, value) {
+  const settings = JSON.parse(localStorage.getItem('ss_settings') || '{}');
+  settings[key] = value;
+  localStorage.setItem('ss_settings', JSON.stringify(settings));
+}
+
+function loadSettings() {
+  const settings = JSON.parse(localStorage.getItem('ss_settings') || '{}');
+  if (settings.quality)   document.getElementById('audioQuality').value = settings.quality;
+  if (settings.autoplay !== undefined) document.getElementById('autoplayToggle').checked = settings.autoplay;
+  if (settings.crossfade !== undefined) document.getElementById('crossfadeToggle').checked = settings.crossfade;
+  if (settings.explicit !== undefined) document.getElementById('explicitToggle').checked = settings.explicit;
+}
+
+updateAuthUI();
+loadProfile();
+initPlayer();
+</script>
+</body>
+</html>

@@ -219,3 +219,85 @@ body {
   .progress-wrap input[type=range] { width: 100px; }
   .player-right { display: none; }
 }
+
+/* ── SHUFFLE / REPEAT ACTIVE ────────────────────────────── */
+.active-control { color: #2f3ebd !important; }
+
+/* ── EXPAND BUTTON ──────────────────────────────────────── */
+.player-right button {
+  background: none; border: none; color: #888; cursor: pointer;
+  font-size: 14px; transition: color 0.2s;
+}
+.player-right button:hover { color: #fff; }
+
+/* ── DELETE PLAYLIST BUTTON ─────────────────────────────── */
+.delete-pl-btn {
+  background: none; border: none; color: #555; cursor: pointer;
+  font-size: 14px; margin-top: 8px; transition: color 0.2s;
+}
+.delete-pl-btn:hover { color: #f87171; }
+
+/* ── FULL-SCREEN PLAYER ─────────────────────────────────── */
+.full-player {
+  position: fixed; inset: 0; z-index: 99999;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.fp-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: blur(60px) brightness(0.3) saturate(1.5); transform: scale(1.1);
+}
+.fp-close {
+  position: absolute; top: 20px; left: 20px; z-index: 2;
+  background: rgba(255,255,255,0.1); border: none; color: #fff;
+  width: 40px; height: 40px; border-radius: 50%; font-size: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;
+}
+.fp-close:hover { background: rgba(255,255,255,0.2); }
+.fp-content {
+  position: relative; z-index: 2; width: 100%; max-width: 420px;
+  padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.fp-cover { width: 280px; height: 280px; border-radius: 20px; object-fit: cover; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+.fp-meta { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+.fp-title  { font-size: 22px; font-weight: 700; color: #fff; }
+.fp-artist { font-size: 14px; color: #aaa; margin-top: 4px; }
+.fp-progress { width: 100%; }
+.fp-progress input[type=range] { width: 100%; accent-color: #2f3ebd; cursor: pointer; height: 4px; }
+.fp-times { display: flex; justify-content: space-between; color: #888; font-size: 12px; margin-top: 4px; }
+.fp-controls { display: flex; align-items: center; gap: 24px; }
+.fp-controls button { background: none; border: none; color: #ccc; font-size: 24px; cursor: pointer; transition: color 0.2s; }
+.fp-controls button:hover { color: #fff; }
+.fp-play-btn {
+  background: #fff !important; color: #000 !important;
+  width: 60px; height: 60px; border-radius: 50% !important;
+  display: flex !important; align-items: center; justify-content: center; font-size: 20px !important;
+}
+.fp-extras { display: flex; align-items: center; gap: 16px; width: 100%; justify-content: center; flex-wrap: wrap; }
+.fp-extras button {
+  background: rgba(255,255,255,0.1); border: none; color: #ccc;
+  padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px;
+  font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 6px; transition: 0.2s;
+}
+.fp-extras button:hover { background: rgba(255,255,255,0.2); color: #fff; }
+.fp-volume { display: flex; align-items: center; gap: 8px; color: #888; }
+.fp-volume input[type=range] { width: 80px; accent-color: #2f3ebd; cursor: pointer; }
+.lyrics-panel {
+  width: 100%; background: rgba(0,0,0,0.4); border-radius: 16px;
+  padding: 20px; max-height: 250px; overflow-y: auto;
+}
+.lyrics-panel h3 { font-size: 14px; color: #888; margin-bottom: 12px; }
+.lyrics-content { font-size: 15px; line-height: 1.8; color: #ddd; }
+.queue-panel {
+  width: 100%; background: rgba(0,0,0,0.4); border-radius: 16px;
+  padding: 16px; max-height: 250px; overflow-y: auto;
+}
+.queue-panel h3 { font-size: 14px; color: #888; margin-bottom: 12px; }
+.queue-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px; border-radius: 8px; cursor: pointer; transition: 0.15s;
+}
+.queue-item:hover { background: rgba(255,255,255,0.1); }
+.queue-item img { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; }
+.queue-title  { font-size: 13px; color: #fff; }
+.queue-artist { font-size: 11px; color: #888; }
