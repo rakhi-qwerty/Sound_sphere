@@ -1,156 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Library UI</title>
-    <link rel="stylesheet" href="../css/library.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library – SoundSphere</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/library.css">
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar">
-
-   <div class="left-half">
-       <a href="index.html" class="logo-link">
-          <div class="logo-box">
-             <img src="images/logo_no_bg - Edited.png" alt="logo">
-          </div>
-      </a>
+  <div class="left-half">
+    <a href="../index.html" class="logo-link">
+      <div class="logo-box">
+        <img src="/images/logo_no_bg - Edited.png" alt="SoundSphere">
+      </div>
+    </a>
   </div>
-
-    <div class="right-half">
-
-        <div class="search-icon" onclick="openSearch()">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-
-       <div class="explore-icon" onclick="openExplore()">
-            <i class="fa-solid fa-compass"></i>
-       </div>
-
-       <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search songs, artists...">
-       </div>
-
-        <button onclick="window.location.href='#'" class="signup-btn">Sign Up</button>
-        <button onclick="window.location.href='#'" class="login-btn">Sign in</button>
-
+  <div class="right-half">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search songs, artists..." onkeydown="handleSearch(event)">
     </div>
-
+    <div id="authButtons">
+      <button onclick="window.location.href='/html/signup.html'" class="signup-btn">Sign Up</button>
+      <button onclick="window.location.href='/html/signin.html'" class="login-btn">Sign in</button>
+    </div>
+    <div id="userMenu" style="display:none; align-items:center; gap:8px;">
+      <span id="userName" style="color:#fff; font-size:14px;"></span>
+      <button onclick="logout()" class="login-btn" style="color:#f87171;">Logout</button>
+    </div>
+  </div>
 </nav>
-    <div class="container">
-        <aside class="sidebar">
-            <nav>
-                <div class="nav-item"><i class="ph ph-house"></i> Home</div>
-                <div class="nav-item"><i class="ph ph-magnifying-glass"></i> Explore</div>
-                <div class="nav-item active"><i class="ph ph-books"></i> Library</div>
-            </nav>
-        </aside>
 
-        <main class="main-content">
-            <header class="top-bar">
-                <div class="search-box">
-                    <i class="ph ph-magnifying-glass"></i>
-                    <input type="text" placeholder="Search songs, artists...">
-                </div>
-                <div class="user-profile"><i class="ph ph-user-circle"></i></div>
-            </header>
+<div class="lib-layout">
 
-            <section class="library-section">
-                <h1>Your Library</h1>
-                <h3>My Playlists</h3>
-                <div class="playlist-grid">
-                    <div class="playlist-card new-playlist">
-                        <div class="plus-icon"><i class="ph ph-plus"></i></div>
-                        <p>New Playlist</p>
-                    </div>
-                    <div class="playlist-card chill">Morning Chill <small>5 Songs</small></div>
-                    <div class="playlist-card workout">Workout Energy <small>15 Songs</small></div>
-                    <div class="playlist-card focus">Deep Focus <small>18 Songs</small></div>
-                    <div class="playlist-card jazz">Midnight Jazz <small>10 Songs</small></div>
-                </div>
-            </section>
-
-            <section class="recently-played">
-                <h3>Recently Played</h3>
-                <table class="song-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>TITLE</th>
-                            <th>ALBUM</th>
-                            <th>DATE ADDED</th>
-                            <th><i class="ph ph-clock"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody id="song-list">
-                        </tbody>
-                </table>
-            </section>
-        </main>
-
-        <footer class="player-bar">
-            <div class="current-song">
-                <div class="song-thumb"></div>
-                <div class="song-info">
-                    <span class="song-name">Summer Breeze</span>
-                    <span class="artist-name">Chill Vibes Artist</span>
-                </div>
-            </div>
-            <div class="player-controls">
-                <i class="ph ph-skip-back-fill"></i>
-                <div class="play-btn"><i class="ph ph-play-fill"></i></div>
-                <i class="ph ph-skip-forward-fill"></i>
-            </div>
-            <div class="volume-control">
-                <i class="ph ph-speaker-high"></i>
-                <div class="vol-slider"></div>
-            </div>
-        </footer>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <nav>
+      <div class="nav-item" onclick="window.location.href='/'">
+        <i class="fa-solid fa-house"></i> Home
+      </div>
+      <div class="nav-item active">
+        <i class="fa-solid fa-book"></i> Library
+      </div>
+    </nav>
+    <div class="sidebar-playlists">
+      <h4>Your Playlists</h4>
+      <div id="sidebarPlaylists"></div>
+      <button class="new-playlist-btn" onclick="createPlaylist()">
+        <i class="fa-solid fa-plus"></i> New Playlist
+      </button>
     </div>
+  </aside>
 
-    <script src="script.js"></script>
-    <script>
-    
-    const songs = [
-        { id: 1, title: "Midnight City", artist: "M83", album: "Hurry Up, We're Dreaming", date: "2 days ago", time: "4:03" },
-        { id: 2, title: "Levitating", artist: "Dua Lipa", album: "Future Nostalgia", date: "3 days ago", time: "3:23" },
-        { id: 3, title: "Blinding Lights", artist: "The Weeknd", album: "After Hours", date: "5 days ago", time: "3:20" },
-        { id: 4, title: "Sunflower", artist: "Post Malone & Swae Lee", album: "Hollywood's Bleeding", date: "1 week ago", time: "2:38" }
-    ];
+  <!-- MAIN -->
+  <main class="main-content">
 
-    
-    const songContainer = document.getElementById('song-list');
+    <!-- LIKED SONGS -->
+    <section class="lib-section">
+      <h2><i class="fa-solid fa-heart" style="color:#f87171"></i> Liked Songs</h2>
+      <div id="likedSongs">
+        <p class="empty-msg">Sign in to see your liked songs.</p>
+      </div>
+    </section>
 
-    
-    if (songContainer) {
-        songContainer.innerHTML = songs.map(song => `
-            <tr>
-                <td>${song.id}</td>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 40px; height: 40px; background: #333; border-radius: 4px;"></div>
-                        <div>
-                            <div style="font-weight: bold; color: white;">${song.title}</div>
-                            <div style="font-size: 12px; color: #b3b3b3;">${song.artist}</div>
-                        </div>
-                    </div>
-                </td>
-                <td>${song.album}</td>
-                <td>${song.date}</td>
-                <td>${song.time}</td>
-            </tr>
-        `).join('');
-    }
+    <!-- PLAYLISTS -->
+    <section class="lib-section">
+      <h2><i class="fa-solid fa-list"></i> My Playlists</h2>
+      <div id="playlistsGrid" class="playlist-grid"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MUSIC PLAYER BAR -->
+<div class="player-bar" id="playerBar" style="display:none;">
+  <div class="player-left">
+    <img id="playerImg" src="" alt="cover">
+    <div class="player-info">
+      <span id="playerTitle">-</span>
+      <span id="playerArtist">-</span>
+    </div>
+    <button class="like-btn" id="likeBtn" onclick="toggleLike()" title="Like">
+      <i class="fa-regular fa-heart"></i>
+    </button>
+  </div>
+  <div class="player-center">
+    <button onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+    <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlay()">
+      <i class="fa-solid fa-play"></i>
+    </button>
+    <button onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+    <div class="progress-wrap">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0" min="0" max="100" oninput="seekTo(this.value)">
+      <span id="totalTime">0:00</span>
+    </div>
+  </div>
+  <div class="player-right">
+    <i class="fa-solid fa-volume-high"></i>
+    <input type="range" id="volumeBar" value="80" min="0" max="100" oninput="setVolume(this.value)">
+  </div>
+</div>
+
+<script>
+const API = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+
+function getToken() { return localStorage.getItem('ss_token'); }
+function getUser()  { return JSON.parse(localStorage.getItem('ss_user') || 'null'); }
+function logout()   { localStorage.removeItem('ss_token'); localStorage.removeItem('ss_user'); window.location.reload(); }
+
+// ── AUTH UI ──────────────────────────────────────────────────
+function updateAuthUI() {
+  const user = getUser();
+  const authButtons = document.getElementById('authButtons');
+  const userMenu    = document.getElementById('userMenu');
+  const userName    = document.getElementById('userName');
+  if (user) {
+    authButtons.style.display = 'none';
+    userMenu.style.display    = 'flex';
+    userName.textContent      = `Hi, ${user.fullname.split(' ')[0]}`;
+  } else {
+    authButtons.style.display = 'flex';
+    userMenu.style.display    = 'none';
+  }
+}
+
+// ── PLAYER ───────────────────────────────────────────────────
+let audio = new Audio();
+let playlist = [], currentIndex = -1, isLiked = false;
+audio.volume = 0.8;
+
+audio.addEventListener('timeupdate', () => {
+  const bar = document.getElementById('progressBar');
+  if (!bar || !audio.duration) return;
+  bar.value = (audio.currentTime / audio.duration) * 100;
+  document.getElementById('currentTime').textContent = fmt(audio.currentTime);
+  document.getElementById('totalTime').textContent   = fmt(audio.duration);
+});
+audio.addEventListener('ended', () => nextSong());
+
+function fmt(s) {
+  return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+}
+
+function playSong(index, tracks) {
+  if (tracks) playlist = tracks;
+  currentIndex = index;
+  const song = playlist[index];
+  if (!song) return;
+  audio.src = song.audio;
+  audio.play();
+  document.getElementById('playerBar').style.display = 'flex';
+  document.getElementById('playerImg').src    = song.image || '';
+  document.getElementById('playerTitle').textContent  = song.track_name || song.name || 'Unknown';
+  document.getElementById('playerArtist').textContent = song.artist_name || 'Unknown';
+  updatePlayIcon();
+}
+
+function togglePlay() { audio.paused ? audio.play() : audio.pause(); updatePlayIcon(); }
+function updatePlayIcon() {
+  const btn = document.getElementById('playPauseBtn');
+  if (btn) btn.innerHTML = audio.paused ? '<i class="fa-solid fa-play"></i>' : '<i class="fa-solid fa-pause"></i>';
+}
+function prevSong() { if (currentIndex > 0) playSong(currentIndex - 1); }
+function nextSong() { if (currentIndex < playlist.length - 1) playSong(currentIndex + 1); }
+function seekTo(v)  { if (audio.duration) audio.currentTime = (v/100) * audio.duration; }
+function setVolume(v) { audio.volume = v/100; }
+
+function setLikeIcon(liked) {
+  const btn = document.getElementById('likeBtn');
+  if (btn) btn.innerHTML = liked ? '<i class="fa-solid fa-heart" style="color:#f87171"></i>' : '<i class="fa-regular fa-heart"></i>';
+}
+async function toggleLike() {
+  const token = getToken();
+  if (!token) { alert('Please sign in to like songs'); return; }
+  const song = playlist[currentIndex];
+  if (!song) return;
+  const trackId = song.track_id || song.id;
+  if (isLiked) {
+    await fetch(`${API}/api/liked/${trackId}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+    isLiked = false;
+  } else {
+    await fetch(`${API}/api/liked`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ track_id: trackId, track_name: song.track_name || song.name, artist_name: song.artist_name, image: song.image, audio: song.audio, duration: song.duration })
+    });
+    isLiked = true;
+  }
+  setLikeIcon(isLiked);
+  loadLikedSongs();
+}
+
+// ── LIKED SONGS ───────────────────────────────────────────────
+async function loadLikedSongs() {
+  const token = getToken();
+  const container = document.getElementById('likedSongs');
+  if (!token) { container.innerHTML = '<p class="empty-msg">Sign in to see your liked songs.</p>'; return; }
+
+  const songs = await fetch(`${API}/api/liked`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []);
+
+  if (!songs.length) { container.innerHTML = '<p class="empty-msg">No liked songs yet. Like songs from the home page.</p>'; return; }
+
+  playlist = songs;
+  container.innerHTML = `
+    <table class="song-table">
+      <thead><tr><th>#</th><th>Title</th><th>Artist</th><th>Duration</th><th></th></tr></thead>
+      <tbody>
+        ${songs.map((s, i) => `
+          <tr onclick="playSong(${i})">
+            <td>${i+1}</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="${s.image}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;">
+                <span>${s.track_name}</span>
+              </div>
+            </td>
+            <td style="color:#888">${s.artist_name}</td>
+            <td style="color:#888">${s.duration ? Math.floor(s.duration/60)+':'+(s.duration%60).toString().padStart(2,'0') : '-'}</td>
+            <td><button onclick="event.stopPropagation(); unlikeSong('${s.track_id}')" style="background:none;border:none;color:#f87171;cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function unlikeSong(trackId) {
+  const token = getToken();
+  if (!token) return;
+  await fetch(`${API}/api/liked/${trackId}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+  loadLikedSongs();
+}
+
+// ── PLAYLISTS ─────────────────────────────────────────────────
+async function loadPlaylists() {
+  const token = getToken();
+  const grid  = document.getElementById('playlistsGrid');
+  const side  = document.getElementById('sidebarPlaylists');
+  if (!token) { grid.innerHTML = '<p class="empty-msg">Sign in to manage playlists.</p>'; return; }
+
+  const playlists = await fetch(`${API}/api/playlists`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []);
+
+  side.innerHTML = playlists.map(p => `<div class="sidebar-pl-item" onclick="viewPlaylist(${p.id}, '${p.name.replace(/'/g,"\\'")}')"><i class="fa-solid fa-music"></i> ${p.name}</div>`).join('');
+
+  if (!playlists.length) { grid.innerHTML = '<p class="empty-msg">No playlists yet. Create one!</p>'; return; }
+
+  grid.innerHTML = playlists.map(p => `
+    <div class="playlist-card" onclick="viewPlaylist(${p.id}, '${p.name.replace(/'/g,"\\'")}')">
+      <i class="fa-solid fa-music" style="font-size:32px;margin-bottom:10px;"></i>
+      <h4>${p.name}</h4>
+    </div>
+  `).join('');
+}
+
+async function createPlaylist() {
+  const token = getToken();
+  if (!token) { alert('Please sign in first'); return; }
+  const name = prompt('Playlist name:');
+  if (!name) return;
+  await fetch(`${API}/api/playlists`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name })
+  });
+  loadPlaylists();
+}
+
+async function viewPlaylist(id, name) {
+  const token = getToken();
+  if (!token) return;
+  const songs = await fetch(`${API}/api/playlists/${id}/songs`, { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []);
+  const container = document.getElementById('likedSongs');
+  playlist = songs;
+
+  if (!songs.length) {
+    container.innerHTML = `<h3>${name}</h3><p class="empty-msg">This playlist is empty.</p>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <h3>${name}</h3>
+    <table class="song-table">
+      <thead><tr><th>#</th><th>Title</th><th>Artist</th><th>Duration</th></tr></thead>
+      <tbody>
+        ${songs.map((s, i) => `
+          <tr onclick="playSong(${i})">
+            <td>${i+1}</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <img src="${s.image}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;">
+                <span>${s.track_name}</span>
+              </div>
+            </td>
+            <td style="color:#888">${s.artist_name}</td>
+            <td style="color:#888">${s.duration ? Math.floor(s.duration/60)+':'+(s.duration%60).toString().padStart(2,'0') : '-'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+function handleSearch(e) {
+  if (e.key === 'Enter') {
+    const val = document.getElementById('searchInput').value.trim();
+    if (val) window.location.href = `/?search=${encodeURIComponent(val)}`;
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+updateAuthUI();
+loadLikedSongs();
+loadPlaylists();
 </script>
 </body>
 </html>
-
-
-

@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../css/signin.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In – SoundSphere</title>
+  <!-- Works from both file:// and http://localhost:3000/html/ -->
+  <link rel="stylesheet" href="/css/signin.css">
 </head>
 <body>
-   <div class="top">
-    Don't have an account? <a href="signup.html">Signup for free</a>
+
+<div class="top">
+  Don't have an account? <a href="/html/signup.html">Sign up for free</a>
 </div>
 
 <div class="container">
-    <h1>Welcome Back</h1>
-    <p>Sign in to continue your musical journey</p>
+  <h1>Welcome Back</h1>
+  <p>Sign in to continue your musical journey</p>
 
-    <div class="input-box">
-        <label>Email Address</label>
-        <input type="email" placeholder="Enter your email">
-    </div>
+  <div id="errorMsg" class="msg error-msg" style="display:none;"></div>
 
-    <div class="input-box password-box">
-        <label>Password</label>
-        <input type="password" placeholder="Enter your password ">
-        <span class="eye" onclick="togglePassword()">👁</span>
-    </div>
+  <div class="input-box">
+    <label>Email Address</label>
+    <input type="email" id="email" placeholder="Enter your email">
+  </div>
 
-    <button>Log In</button>
-</div> 
-    
-</body>
-</html>
+  <div class="input-box password-box">
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Enter your password">
+    <span class="eye" id="eyeToggle">👁</span>
+  </div>
 
+  <button id="loginBtn">Log In</button>
+
+  <p style="text-align:center; margin-top:15px; color:#9ca3af; font-size:13px;">
+    <a href="/" style="color:#3b82f6; text-decoration:none;">← Back to Home</a>
+  </p>
+</div>
 
 <script>
-    const passwordInput=document.querySelector('.password-box input');
-    const toggleButton=document.querySelector('.password-box span');
-    const button = document.querySelector('button');
-    const emailInput = document.querySelector('input[type="email"]');
-    const toggleIcon = document.querySelector('.password-box span');
+  // Auto-detect API base
+  const API = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
 
-    toggleIcon.addEventListener('click', function () {
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        toggleIcon.textContent = "👁️";
-    } else {
-        passwordInput.type = "password";
-        toggleIcon.textContent = "👁";
+  document.getElementById('eyeToggle').addEventListener('click', function () {
+    const input = document.getElementById('password');
+    input.type = input.type === 'password' ? 'text' : 'password';
+    this.textContent = input.type === 'password' ? '👁' : '🙈';
+  });
+
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errDiv   = document.getElementById('errorMsg');
+    const btn      = document.getElementById('loginBtn');
+
+    errDiv.style.display = 'none';
+
+    if (!email || !password) {
+      errDiv.textContent = 'Please fill all fields.';
+      errDiv.style.display = 'block';
+      return;
     }
-});
 
-   button.addEventListener('click', function (e) {
-    e.preventDefault();
+    btn.textContent = 'Signing in...';
+    btn.disabled = true;
 
-    let email = emailInput.value.trim();
-    let password = passwordInput.value.trim();
+    try {
+      const res  = await fetch(`${API}/api/auth/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
 
-    if (email === "" || password === "") {
-        alert("Please fill all fields!");
+      if (!res.ok) {
+        errDiv.textContent = data.error || 'Login failed.';
+        errDiv.style.display = 'block';
+        btn.textContent = 'Log In';
+        btn.disabled = false;
         return;
+      }
+
+      localStorage.setItem('ss_token', data.token);
+      localStorage.setItem('ss_user', JSON.stringify(data.user));
+      window.location.href = '/';
+    } catch {
+      errDiv.textContent = 'Cannot connect to server. Make sure backend is running on port 3000.';
+      errDiv.style.display = 'block';
+      btn.textContent = 'Log In';
+      btn.disabled = false;
     }
+  });
 
-    let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-    if (!email.match(pattern)) {
-        alert("Enter a valid email!");
-        return;
-    }
-
-    if (password.length < 6) {
-        alert("Password must be at least 6 characters!");
-        return;
-    }
-
-    alert("Login Successful!");
-
-    window.location.href = "../index.html";
-});
-
-    
+  // Allow Enter key to submit
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('loginBtn').click();
+  });
 </script>
+</body>
+</html>

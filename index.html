@@ -1,183 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoundSphere</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Gilda+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
 <body>
 
- 
-
+<!-- NAVBAR -->
 <nav class="navbar">
-
-   <div class="left-half">
-       <a href="index.html" class="logo-link">
-          <div class="logo-box">
-             <img src="images/logo_no_bg - Edited.png" alt="logo">
-          </div>
-      </a>
+  <div class="left-half">
+    <a href="index.html" class="logo-link">
+      <div class="logo-box">
+        <img src="images/logo_no_bg - Edited.png" alt="SoundSphere">
+      </div>
+    </a>
   </div>
-
-    <div class="right-half">
-
-        <div class="search-icon" onclick="openSearch()">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-
-       <div class="explore-icon" onclick="openExplore()">
-            <i class="fa-solid fa-compass"></i>
-       </div>
-
-       <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search songs, artists...">
-       </div>
-
-        <button onclick="window.location.href='../html/signup.html'" class="signup-btn">Sign Up</button>
-        <button onclick="window.location.href='../html/signin.html'" class="login-btn">Sign in</button>
-
+  <div class="right-half">
+    <div class="search-icon" onclick="toggleSearchBox()">
+      <i class="fa-solid fa-magnifying-glass"></i>
     </div>
-
+    <div class="explore-icon" onclick="window.location.href='html/library.html'">
+      <i class="fa-solid fa-compass"></i>
+    </div>
+    <div class="search-box" id="searchBox">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search songs, artists..." onkeydown="handleSearch(event)">
+    </div>
+    <div id="authButtons">
+      <button onclick="window.location.href='html/signup.html'" class="signup-btn">Sign Up</button>
+      <button onclick="window.location.href='html/signin.html'" class="login-btn">Sign in</button>
+    </div>
+    <div id="userMenu" style="display:none;">
+      <span id="userName" style="color:#fff; font-size:14px; margin-right:10px;"></span>
+      <button onclick="logout()" class="login-btn" style="color:#f87171;">Logout</button>
+    </div>
+  </div>
 </nav>
 
-
-
+<!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-content">
     <h1>Explore Millions of Songs.</h1>
-    <h2>Fresh Beats & vibes.</h2>
-    <p>Explore more. millions of Songs Fresh Beats and vibes.</p>
-    <button class="cta-btn">Get started</button>
+    <h2>Fresh Beats & Vibes.</h2>
+    <p>Stream free music from artists around the world.</p>
+    <button class="cta-btn" onclick="document.getElementById('songs-container').scrollIntoView({behavior:'smooth'})">Get Started</button>
   </div>
 </section>
 
-
-
+<!-- MAIN CONTENT -->
 <section class="content-section">
 
-
+  <!-- TRENDING SONGS -->
   <div class="trending">
-    <h2 class="section-title">Trending songs</h2>
-    <div class="cards" id="songs-container"></div>
+    <h2 class="section-title">Trending Songs</h2>
+    <div class="cards" id="songs-container">
+      <div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+    </div>
   </div>
 
-  
+  <!-- GENRES -->
   <div class="genres-section">
     <h2 class="section-title">Fresh Genres</h2>
-
     <div class="genres">
-      <button class="genre-btn pop">Pop</button>
-      <button class="genre-btn rock">Rock</button>
-      <button class="genre-btn relax">Relax</button>
-      <button class="genre-btn country">Country</button>
-      <button class="genre-btn hiphop">Hip Hop</button>
-      <button class="genre-btn soft">Soft</button>
-
+      <button class="genre-btn pop"        onclick="filterGenre('pop')">Pop</button>
+      <button class="genre-btn rock"       onclick="filterGenre('rock')">Rock</button>
+      <button class="genre-btn relax"      onclick="filterGenre('ambient')">Relax</button>
+      <button class="genre-btn country"    onclick="filterGenre('country')">Country</button>
+      <button class="genre-btn hiphop"     onclick="filterGenre('hiphop')">Hip Hop</button>
+      <button class="genre-btn soft"       onclick="filterGenre('acoustic')">Acoustic</button>
+      <button class="genre-btn jazz"       onclick="filterGenre('jazz')">Jazz</button>
+      <button class="genre-btn electronic" onclick="filterGenre('electronic')">Electronic</button>
+      <button class="genre-btn bollywood"  onclick="filterGenre('bollywood')">Bollywood</button>
+      <button class="genre-btn punjabi"    onclick="filterGenre('punjabi')">Punjabi</button>
+      <button class="genre-btn romantic"   onclick="filterGenre('romantic')">Romantic</button>
+      <button class="genre-btn party"      onclick="filterGenre('party')">Party</button>
     </div>
   </div>
 
- <div class="artist-card">
-
- <h2 class="section-title-artist">Artist</h2>
-
-  <div class="artist-section" id="artist-container">
-    
-
-
-     <a href="artist.html">
-      <img src="images/artist/arjit singh.jpg" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-     <a href="artist.html">
-      <img src="images/artist/Justin bieber.webp" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-      <a href="artist.html">
-      <img src="images/artist/daljit dosanjih.jpg" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-      <a href="artist.html">
-      <img src="images/artist/arman malik.jpg" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-      <a href="artist.html">
-      <img src="images/artist/kim taehyung.jpg" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-      <a href="artist.html">
-      <img src="images/artist/taylor swift.jpg" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-      <a href="artist.html">
-      <img src="images/artist/lisa.webp" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-      <a href="artist.html">
-      <img src="images/artist/yo yo honey singh.jpg" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-      <a href="artist.html">
-      <img src="images/artist/Justin bieber.webp" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
-      <a href="artist.html">
-      <img src="images/artist/lisa.webp" alt="artist">
-      <h4>Arijit Singh</h4>
-     </a>
-
+  <!-- ARTISTS -->
+  <div class="artist-card">
+    <h2 class="section-title-artist">Popular Artists</h2>
+    <div class="artist-section" id="artist-container">
+      <div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+    </div>
   </div>
 
-
+  <!-- ALBUMS -->
   <div class="album-section">
-
-    <h2 class="section-title">Popular Albums and singles</h2>
-     
-    <div class="album-container">
-
-      <div class="album-card">
-        <img src="images/chahu me ya na.jpg" alt="album">
-        <h4>Aashiqui 2 </h4>
-      
+    <h2 class="section-title">Popular Albums</h2>
+    <div class="album-container" id="album-container">
+      <div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
     </div>
-
-      <div class="album-card">
-        <img src="images/album2.jpg" alt="album">
-        <h4>Album Name</h4>
-      </div>
-
-      
-
   </div>
- 
-  
-
-
-</div>
 
 </section>
 
+<!-- MUSIC PLAYER BAR -->
+<div class="player-bar" id="playerBar" style="display:none;">
+  <div class="player-left">
+    <img id="playerImg" src="" alt="cover">
+    <div class="player-info">
+      <span id="playerTitle">-</span>
+      <span id="playerArtist">-</span>
+    </div>
+    <button class="like-btn" id="likeBtn" onclick="toggleLike()" title="Like">
+      <i class="fa-regular fa-heart"></i>
+    </button>
+  </div>
+  <div class="player-center">
+    <button onclick="prevSong()"><i class="fa-solid fa-backward-step"></i></button>
+    <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlay()">
+      <i class="fa-solid fa-play"></i>
+    </button>
+    <button onclick="nextSong()"><i class="fa-solid fa-forward-step"></i></button>
+    <div class="progress-wrap">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0" min="0" max="100" oninput="seekTo(this.value)">
+      <span id="totalTime">0:00</span>
+    </div>
+  </div>
+  <div class="player-right">
+    <i class="fa-solid fa-volume-high"></i>
+    <input type="range" id="volumeBar" value="80" min="0" max="100" oninput="setVolume(this.value)">
+  </div>
+</div>
 
-
-
-
-
-
-<script src="/script.js"></script>
-
+<script src="js/app.js"></script>
 </body>
-</html> 
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "sound_sphere",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakhi-qwerty/Sound_sphere.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rakhi-qwerty/Sound_sphere/issues"
+  },
+  "homepage": "https://github.com/rakhi-qwerty/Sound_sphere#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "node-fetch": "2.7.0"
+  }
+}
