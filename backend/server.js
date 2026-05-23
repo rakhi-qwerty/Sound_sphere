@@ -11,7 +11,22 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '..')));
+
+// Serve static files from project root with correct MIME types
+const staticRoot = path.join(__dirname, '..');
+app.use(express.static(staticRoot, {
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('.js'))   res.setHeader('Content-Type', 'application/javascript');
+    if (filePath.endsWith('.css'))  res.setHeader('Content-Type', 'text/css');
+    if (filePath.endsWith('.html')) res.setHeader('Content-Type', 'text/html');
+    if (filePath.endsWith('.json')) res.setHeader('Content-Type', 'application/json');
+    if (filePath.endsWith('.png'))  res.setHeader('Content-Type', 'image/png');
+    if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) res.setHeader('Content-Type', 'image/jpeg');
+    if (filePath.endsWith('.webp')) res.setHeader('Content-Type', 'image/webp');
+    if (filePath.endsWith('.mp3'))  res.setHeader('Content-Type', 'audio/mpeg');
+    if (filePath.endsWith('.svg'))  res.setHeader('Content-Type', 'image/svg+xml');
+  }
+}));
 
 const JWT_SECRET = process.env.JWT_SECRET || 'soundsphere_secret_key_2024';
 const SAAVN_BASE = 'https://saavn.sumit.co';
@@ -234,5 +249,10 @@ app.delete('/api/playlists/:id/songs/:track_id', authMiddleware, (req, res) => {
 });
 
 // ── START ─────────────────────────────────────────────────────
+// Fallback: serve index.html for any non-API, non-file route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ SoundSphere running at http://localhost:${PORT}`));
