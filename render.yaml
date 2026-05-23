@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: soundsphere
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: JWT_SECRET
+        generateValue: true   # Render auto-generates a secure random value
+      - key: DB_PATH
+        value: /opt/render/project/src/backend/soundsphere.db

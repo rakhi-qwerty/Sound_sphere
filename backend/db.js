@@ -1,7 +1,10 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 
-const db = new Database(path.join(__dirname, 'soundsphere.db'));
+// On Render (or any cloud), DB_PATH env var can point to a persistent disk.
+// Falls back to the local backend/ folder for development.
+const dbPath = process.env.DB_PATH || path.join(__dirname, 'soundsphere.db');
+const db = new Database(dbPath);
 
 // Create users table
 db.exec(`
