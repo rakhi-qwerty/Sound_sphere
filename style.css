@@ -528,6 +528,15 @@ img {
 }
 
 
+/* footer */
+footer {
+  background: #111;
+  color: #888;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  font-size: 14px;
+}
 
 
 
