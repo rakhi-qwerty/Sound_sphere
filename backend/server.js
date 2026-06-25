@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from project root with correct MIME types
+
 const staticRoot = path.join(__dirname, '..');
 app.use(express.static(staticRoot, {
   setHeaders(res, filePath) {
@@ -31,7 +31,6 @@ app.use(express.static(staticRoot, {
 const JWT_SECRET = process.env.JWT_SECRET || 'soundsphere_secret_key_2024';
 const SAAVN_BASE = 'https://saavn.sumit.co';
 
-// ── HELPERS ──────────────────────────────────────────────────
 function authMiddleware(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'No token provided' });
@@ -71,7 +70,7 @@ function normalizeSong(song) {
     duration:    song.duration || 0,
     image:       img,
     audio:       `/api/stream/${song.id}`,
-    _downloadUrl: song.downloadUrl   // keep for stream route
+    _downloadUrl: song.downloadUrl   
   };
 }
 
@@ -248,7 +247,7 @@ app.delete('/api/playlists/:id/songs/:track_id', authMiddleware, (req, res) => {
   res.json({ success: true });
 });
 
-// ── START ─────────────────────────────────────────────────────
+
 // Fallback: serve index.html for any non-API, non-file route
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
